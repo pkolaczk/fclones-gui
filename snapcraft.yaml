@@ -1,0 +1,36 @@
+name: fclones-gui
+version: git
+summary: Efficient duplicate file finder and remover
+description: Finds duplicate, unique, under- or over-replicated files and offers many ways to get rid of them
+base: core22
+confinement: strict
+grade: stable
+
+parts:
+  rust-deps:
+    plugin: nil
+    build-packages:
+      - curl
+    override-pull: |
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+  fclones-gui:
+    plugin: rust
+    source: .
+    after: [rust-deps]
+    build-packages:
+      - pkg-config
+      - libgtk-4-dev
+      - libadwaita-1-dev
+    stage-packages:
+      - libgtk-4-1
+      - libadwaita-1-0
+    rust-path: 
+      - fclones-gui
+
+apps:
+  fclones-gui:
+    command: bin/fclones-gui
+    plugs:
+      - home
+      - removable-media

@@ -1,0 +1,7 @@
+/target
+/vendor
+**/*.rs.bk
+.idea
+.vscode
+.rpm
+*.iml
