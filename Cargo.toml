@@ -1,0 +1,6 @@
+[workspace]
+members = ["fclones-gui"]
+
+[profile.release]
+panic = "abort"
+lto = true
