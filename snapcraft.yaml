@@ -1,7 +1,7 @@
 name: fclones-gui
 version: git
-summary: Efficient duplicate file finder and remover
-description: Finds duplicate, unique, under- or over-replicated files and offers many ways to get rid of them
+summary: Efficient interactive duplicate file finder and remover
+description: Finds duplicate files and offers many ways to get rid of them
 base: core22
 confinement: strict
 grade: stable
@@ -22,16 +22,19 @@ parts:
       - pkg-config
       - libgtk-4-dev
       - libadwaita-1-dev
-    stage-packages:
-      - libgtk-4-1
-      - libadwaita-1-0
-      - fontconfig
-    rust-path: 
+    rust-path:
       - fclones-gui
 
 apps:
   fclones-gui:
+    extensions: [gnome]
     command: bin/fclones-gui
     plugs:
       - home
       - removable-media
+
+slots:
+  fclones-gui:
+    interface: dbus
+    bus: session
+    name: io.github.pkolaczk.Fclones
