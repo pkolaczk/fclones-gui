@@ -25,6 +25,7 @@ parts:
     stage-packages:
       - libgtk-4-1
       - libadwaita-1-0
+      - fontconfig
     rust-path: 
       - fclones-gui
 
