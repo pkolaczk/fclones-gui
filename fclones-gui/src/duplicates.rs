@@ -1,4 +1,3 @@
-use adw::gio::{ListStore, SimpleAction};
 use std::cell::{Cell, RefCell};
 use std::collections::BTreeSet;
 use std::ops::Deref;
@@ -6,16 +5,18 @@ use std::path::PathBuf;
 use std::rc::Rc;
 use std::sync::Arc;
 
-use adw::gtk::{ButtonsType, ColumnViewColumn, MessageDialog};
 use fclones::{sort_by_priority, FileLen};
 use fclones::{DedupeOp, FileSubGroup};
 use fclones::{PartitionedFileGroup, Path};
-use itertools::Itertools;
-use relm4::gtk;
 
+use adw::gio::{ListStore, SimpleAction};
+use adw::glib::BoxedAnyObject;
+use adw::gtk::{ButtonsType, ColumnViewColumn, MessageDialog};
 use adw::prelude::*;
 use gtk::gio;
 use gtk::glib;
+use itertools::Itertools;
+use relm4::gtk;
 use relm4::gtk::prelude::{ActionMapExt, ButtonExt};
 use relm4::gtk::MessageType;
 
@@ -34,6 +35,7 @@ pub struct DuplicatesPageModel {
     selection_priority: Cell<fclones::Priority>,
     last_chosen_directory: Rc<RefCell<Option<PathBuf>>>,
     dedupe_op: DedupeOp,
+    tree_model_extend_reverses_order: bool,
 }
 
 impl DuplicatesPageModel {
@@ -50,7 +52,20 @@ impl DuplicatesPageModel {
             selection_priority: Cell::new(fclones::Priority::Top),
             last_chosen_directory: Rc::new(RefCell::new(None)),
             dedupe_op: DedupeOp::Remove,
+            tree_model_extend_reverses_order: Self::tree_model_extend_reverses_order(),
         }
+    }
+
+    /// In some versions of GTK, TreeListModel reverses the order of items
+    /// added with `extend`. This method returns true if we're linked against such buggy GTK version.
+    fn tree_model_extend_reverses_order() -> bool {
+        let ls = ListStore::new(BoxedAnyObject::static_type());
+        let tree = gtk::TreeListModel::new(&ls, false, true, |_| None);
+        let mut model: ListStore = tree.model().downcast().unwrap();
+        let v1 = BoxedAnyObject::new(1);
+        let v2 = BoxedAnyObject::new(2);
+        model.extend(&[&v1, &v2]);
+        tree.child_row(0).unwrap().item().unwrap() != v1
     }
 
     pub fn clear_files(&mut self) {
@@ -74,7 +89,14 @@ impl DuplicatesPageModel {
             .map(|(id, g)| FileGroupItem::new(start_id + id, g));
         self.total_count += count;
         self.total_size += size;
-        self.root_store().extend(files);
+
+        if self.tree_model_extend_reverses_order {
+            // workaround for https://gitlab.gnome.org/GNOME/gtk/-/issues/5920
+            // workaround for https://gitlab.gnome.org/GNOME/gtk/-/issues/5707
+            self.root_store().extend(files.rev());
+        } else {
+            self.root_store().extend(files);
+        }
     }
 
     pub(crate) fn remove_files(&mut self, position: u32, paths: &[Path]) {
@@ -306,10 +328,8 @@ fn create_files_model() -> gtk::TreeListModel {
     let files = gio::ListStore::new(FileGroupItem::static_type());
     gtk::TreeListModel::new(&files, false, true, |parent| {
         if let Some(group) = parent.downcast_ref::<FileGroupItem>() {
-            let store = gio::ListStore::new(FileItem::static_type());
-            for file in group.files().iter() {
-                store.append(file);
-            }
+            let mut store = gio::ListStore::new(FileItem::static_type());
+            store.extend(group.files().iter());
             Some(store.upcast())
         } else {
             None
