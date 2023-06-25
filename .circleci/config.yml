@@ -37,7 +37,7 @@ jobs:
           command: |
             cargo clippy --all -- -D warnings -D rust-2018-idioms
 
-  test:
+  build-and-test:
     docker:
       - image: cimg/rust:1.65.0
     environment:
