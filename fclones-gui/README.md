@@ -2,6 +2,9 @@ GUI for fclones
 =======================
 **Allows interactive removal of duplicate files**
 
+[![CircleCI](https://circleci.com/gh/pkolaczk/fclones-gui.svg?style=shield)](https://circleci.com/gh/pkolaczk/fclones-gui)
+[![crates.io](https://img.shields.io/crates/v/fclones-gui.svg)](https://crates.io/crates/fclones-gui)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
 Warning: This is a very early preview version.
