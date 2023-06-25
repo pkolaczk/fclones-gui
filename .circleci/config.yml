@@ -23,6 +23,11 @@ jobs:
     docker:
       - image: cimg/rust:1.70.0
     steps:
+      - run:
+          name: Install GTK4
+          command: |
+            sudo apt update
+            sudo apt install -y libgtk-4-dev libadwaita-1-dev
       - checkout
       - run:
           name: Version information
