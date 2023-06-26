@@ -1,0 +1,4 @@
+Type=Application
+Name=Fclones
+Exec=fclones-gui
+Comment=Finds and removes duplicate files
