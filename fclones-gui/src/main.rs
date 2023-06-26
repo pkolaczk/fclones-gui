@@ -15,6 +15,6 @@ mod progress;
 
 fn main() {
     adw::init().unwrap();
-    let relm = RelmApp::new("pkolaczk.fclones");
+    let relm = RelmApp::new("io.github.pkolaczk.Fclones");
     relm.run::<app::AppModel>(env::current_dir().iter().cloned().collect());
 }
