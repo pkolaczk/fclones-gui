@@ -29,7 +29,7 @@ apps:
   fclones-gui:
     extensions: [gnome]
     command: bin/fclones-gui
-    common-id: io.github.pkolaczk.Fclones.desktop
+    common-id: io.github.pkolaczk.Fclones
     plugs:
       - home
       - removable-media
