@@ -35,17 +35,26 @@ This hasn't been thoroughly tested.
   - parallel processing capability in all I/O and CPU heavy stages 
   - automatic tuning of parallelism and access strategy based on device type (SSD vs HDD)
   - low memory footprint thanks to heavily optimized path representation 
-  - variety of fast non-cryptographic and cryptographic hash functions up to 512 bits wide 
   - doesn't push data out of the page-cache 
   - accurate progress reporting 
-  - uses modern GTK4 list controls that can display hundreds thousands items
+  - uses modern GTK4 list controls that can display hundreds thousands file items
 
 ## Installation
+### Packages
 
-Assuming you have Rust toolchain and GTK4 development libraries installed on your system,
-you should be able to build it from source with the following command:
+Fclones is available in Snap Store:
 
 ```shell
+snap install fclones-gui
+```
+
+There are also binary packages attached to each [release](https://github.com/pkolaczk/fclones-gui/releases/latest).
+
+### Building from Source
+Assuming you have Rust toolchain, run the following commands:
+
+```shell
+sudo apt install libgtk-4-dev libadwaita-1-dev
 cargo install fclones-gui
 ```
 

@@ -1,4 +1,7 @@
+[Desktop Entry]
 Type=Application
 Name=Fclones
 Exec=fclones-gui
+Icon=${SNAP}/meta/gui/fclones-gui.png
 Comment=Finds and removes duplicate files
+Categories=Utility
