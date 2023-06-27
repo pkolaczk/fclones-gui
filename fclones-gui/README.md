@@ -4,6 +4,7 @@ GUI for [fclones](https://github.com/pkolaczk/fclones)
 
 [![CircleCI](https://circleci.com/gh/pkolaczk/fclones-gui.svg?style=shield)](https://circleci.com/gh/pkolaczk/fclones-gui)
 [![crates.io](https://img.shields.io/crates/v/fclones-gui.svg)](https://crates.io/crates/fclones-gui)
+[![fclones-gui](https://snapcraft.io/fclones-gui/badge.svg)](https://snapcraft.io/fclones-gui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
